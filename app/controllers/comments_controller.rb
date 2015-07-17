@@ -9,10 +9,16 @@ class CommentsController < ApplicationController
   end
 
   def create
-    respond_with Comment.create!(comment_params)
+    respond_to do |format|
+      format.html {render text: "Your data was sucessfully loaded. Thanks"}
+      format.json { 
+                   Comment.create(comment_params)
+                   render text: Comment.last.to_json  # !
+                  }
+    end
   end
 
-  private
+private
 
   def comment_params
     params.require(:comment).permit(:author, :comment)
